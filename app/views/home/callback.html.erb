@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Appface</title>
+  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+
+<div class="panel panel-default">
+	  <div class="panel-heading">
+		<h1>Single no more</h1>
+	  Friends without relationship, so... they are available! What are you waiting?</div>
+	<table class="table">
+	<thead>
+		<tr><th>Profile Picture</th>
+		<th>Name</th>
+		<th>Age</th>
+		<th>About</th></tr>
+	</thead>
+	<tbody>
+		
+		<% @graph_data.each do |friend| %>
+		<tr><td><img src="<%= friend["pic_small"] %>"/></td><td><a class="getdatauser" data-id="<%= friend["uid"] %>" href="#"><%= friend["first_name"] + " " + friend["last_name"]  %></a></td>
+		<td>
+		<% if friend["birthday_date"].to_s.size == 10 %>
+		<%= Time.now.to_s[0..3].to_i - friend["birthday_date"].to_s[-4,4].to_i %> 
+		<% else %> Not Provided 
+		<% end %>
+		</td>
+
+		<td><%= friend["about_me"] %> </td></tr>
+		<% end %>
+	</tbody>
+
+	</table>
+</div>
+
+<div id="datafriend" class="panel panel-primary scroll-pane">
+	
+</div>
+
+
+
+<script type="text/javascript">
+	$(document).ready(function(){
+
+
+$(function(){
+
+     $('body').click(function() {
+
+         $("#datafriend").css("display","none");
+
+     });
+
+ 
+
+     $('#datafriend').click(function(event){
+
+         event.stopPropagation();
+
+     });
+
+});
+
+		
+
+	$(".getdatauser").on("click",function(e){
+		e.preventDefault();
+		var idfriend = $(this).data("id");
+
+		$.ajax({
+			type: 'get',
+			url:'http://tranquil-crag-5078.herokuapp.com/home/getdata?id='+idfriend,
+			dataType: 'html',
+			success:function(recibo){
+            	$('#datafriend').html(recibo);
+            	$('#datafriend').fadeIn();
+          	}
+		});
+		
+	});
+	
+});
+</script>
+</body>
+</html>

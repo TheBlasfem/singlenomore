@@ -1,0 +1,52 @@
+<% @datafriend.each { |item| %>
+
+ <div class="panel-heading">
+        <h3 class="panel-title">Friend's Information</h3>
+    </div>
+    <div class="panel-body">
+
+	<h1><%= item["name"] %></h1>
+
+	<img class="perfil" src="<%= item["pic"] %>"/>
+
+	<% if item["status"].to_s.length>1 %>
+		<h2>Last Status</h2><p><%= item["status"]["message"] %></p>
+	<% end %>
+
+	<% if item["about_me"].to_s.length>1 %>
+		<h2>About me</h2><p><%= item["about_me"] %></p>
+	<% end %>
+
+	<% if item["interests"].to_s.length>1 %>
+		<h2>Interests</h2><p><%= item["interests"] %></p>
+	<% end %>
+
+	<% if item["activities"].to_s.length>1 %>
+		<h2>Activities</h2><p><%= item["activities"] %></p>
+	<% end %>
+
+	<% if item["friend_count"] %>
+		<h2>Number of Friends</h2><p><%= item["friend_count"] %></p>
+	<% end %>
+
+	<% if item["current_location"] %>
+		<h2>Current Location</h2><p><%= item["current_location"]["name"] %></p>
+	<% end %>
+
+	<h2>Fanpages in common</h2>
+	
+	<ul>
+	<% @mylikes.each do |mylike|  %>
+		<% @likesfriend.each do |likefriend|  %>
+			<% if likefriend["name"]==mylike["name"]  %>
+				<li><%= likefriend["name"] %></li>
+			<% end %>
+		<% end %>
+	<% end %>
+	</ul>
+
+	<a target="_blank" class="btn btn-primary" href="<%= item["profile_url"] %>">Go to my profile</a>
+
+	</div>
+
+<% } %>
